@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="seq.css">
+    <title>Sequence</title>
+</head>
+<body>
+    <div id="root">
+        <div class="signin-modal">
+            <div class="signin-box">
+                <form action="# " class="signin-form">
+                    <p class="input-container">
+                        Username
+                        <input type="text" class="input-box user">
+                    </p>
+                    <p class="input-container">
+                        Password
+                        <input type="password" class="input-box password">
+                    </p>
+                    <p class="input-container">
+                        Hostname
+                        <input type="text" class="input-box host" value="127.0.0.1:5000">
+                    </p>
+                    <p class="input-container">
+                        <input onclick="loginUser(event)" class="input-box login-submit" value="Login">
+                    </p>
+                </form>
+            </div>
+        </div>
+        <div class="start-container start-container-hidden">
+            <form action="#" class="start-form">
+                <p class="input-container">
+                    Number of teams
+                    <select name="team-count" class="input-box team-count">
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                    </select>
+                </p>
+                <p class="input-container">
+                    <input onclick="start(event)" class="input-box admin-submit" value="Start round">
+                </p>
+                <p class="input-container">
+                    <input onclick="newGame(event)" class="input-box admin-submit" value="New game">
+                </p>
+            </form>
+        </div>
+        <div class="board-container">
+            <div class="board">
+                <div class="card row-one empty" title="empty">
+                    <img class="card-img" src="assets/images/cards/empty.png" />
+                </div>
+                <div class="card row-one spades_2 deck1" title="Spades 2">
+                    <img class="card-img" src="assets/images/cards/spades_2.png" />
+                </div>
+                <div class="card row-one spades_3 deck1" title="Spades 3">
+                    <img class="card-img" src="assets/images/cards/spades_3.png" />
+                </div>
+                <div class="card row-one spades_4 deck1" title="Spades 4">
+                    <img class="card-img" src="assets/images/cards/spades_4.png" />
+                </div>
+                <div class="card row-one spades_5 deck1" title="Spades 5">
+                    <img class="card-img" src="assets/images/cards/spades_5.png" />
+                </div>
+                <div class="card row-one spades_6 deck1" title="Spades 6">
+                    <img class="card-img" src="assets/images/cards/spades_6.png" />
+                </div>
+                <div class="card row-one spades_7 deck1" title="Spades 7">
+                    <img class="card-img" src="assets/images/cards/spades_7.png" />
+                </div>
+                <div class="card row-one spades_8 deck1" title="Spades 8">
+                    <img class="card-img" src="assets/images/cards/spades_8.png" />
+                </div>
+                <div class="card row-one spades_9 deck1" title="Spades 9">
+                    <img class="card-img" src="assets/images/cards/spades_9.png" />
+                </div>
+                <div class="card row-one empty" title="empty">
+                    <img class="card-img" src="assets/images/cards/empty.png" />
+                </div>
+                <div class="card row-two clubs_6 deck1" title="Clubs 6">
+                    <img class="card-img" src="assets/images/cards/clubs_6.png" />
+                </div>
+                <div class="card row-two clubs_5 deck1" title="Clubs 5">
+                    <img class="card-img" src="assets/images/cards/clubs_5.png" />
+                </div>
+                <div class="card row-two clubs_4 deck1" title="Clubs 4">
+                    <img class="card-img" src="assets/images/cards/clubs_4.png" />
+                </div>
+                <div class="card row-two clubs_3 deck1" title="Clubs 3">
+                    <img class="card-img" src="assets/images/cards/clubs_3.png" />
+                </div>
+                <div class="card row-two clubs_2 deck1" title="Clubs 2">
+                    <img class="card-img" src="assets/images/cards/clubs_2.png" />
+                </div>
+                <div class="card row-two hearts_A deck1" title="Hearts A">
+                    <img class="card-img" src="assets/images/cards/hearts_A.png" />
+                </div>
+                <div class="card row-two hearts_K deck1" title="Hearts K">
+                    <img class="card-img" src="assets/images/cards/hearts_K.png" />
+                </div>
+                <div class="card row-two hearts_Q deck1" title="Hearts Q">
+                    <img class="card-img" src="assets/images/cards/hearts_Q.png" />
+                </div>
+                <div class="card row-two hearts_10 deck1" title="Hearts 10">
+                    <img class="card-img" src="assets/images/cards/hearts_10.png" />
+                </div>
+                <div class="card row-two spades_10 deck1" title="Spades 10">
+                    <img class="card-img" src="assets/images/cards/spades_10.png" />
+                </div>
+                <div class="card row-three clubs_7 deck1" title="Clubs 7">
+                    <img class="card-img" src="assets/images/cards/clubs_7.png" />
+                </div>
+                <div class="card row-three spades_A deck1" title="Spades A">
+                    <img class="card-img" src="assets/images/cards/spades_A.png" />
+                </div>
+                <div class="card row-three diamonds_2 deck1" title="Diamonds 2">
+                    <img class="card-img" src="assets/images/cards/diamonds_2.png" />
+                </div>
+                <div class="card row-three diamonds_3 deck1" title="Diamonds 3">
+                    <img class="card-img" src="assets/images/cards/diamonds_3.png" />
+                </div>
+                <div class="card row-three diamonds_4 deck1" title="Diamonds 4">
+                    <img class="card-img" src="assets/images/cards/diamonds_4.png" />
+                </div>
+                <div class="card row-three diamonds_5 deck1" title="Diamonds 5">
+                    <img class="card-img" src="assets/images/cards/diamonds_5.png" />
+                </div>
+                <div class="card row-three diamonds_6 deck1" title="Diamonds 6">
+                    <img class="card-img" src="assets/images/cards/diamonds_6.png" />
+                </div>
+                <div class="card row-three diamonds_7 deck1" title="Diamonds 7">
+                    <img class="card-img" src="assets/images/cards/diamonds_7.png" />
+                </div>
+                <div class="card row-three hearts_9 deck1" title="Hearts 9">
+                    <img class="card-img" src="assets/images/cards/hearts_9.png" />
+                </div>
+                <div class="card row-three spades_Q deck1" title="Spades Q">
+                    <img class="card-img" src="assets/images/cards/spades_Q.png" />
+                </div>
+                <div class="card row-four clubs_8 deck1" title="Clubs 8">
+                    <img class="card-img" src="assets/images/cards/clubs_8.png" />
+                </div>
+                <div class="card row-four spades_K deck1" title="Spades K">
+                    <img class="card-img" src="assets/images/cards/spades_K.png" />
+                </div>
+                <div class="card row-four clubs_6 deck2" title="Clubs 6">
+                    <img class="card-img" src="assets/images/cards/clubs_6.png" />
+                </div>
+                <div class="card row-four clubs_5 deck2" title="Clubs 5">
+                    <img class="card-img" src="assets/images/cards/clubs_5.png" />
+                </div>
+                <div class="card row-four clubs_4 deck2" title="Clubs 4">
+                    <img class="card-img" src="assets/images/cards/clubs_4.png" />
+                </div>
+                <div class="card row-four clubs_3 deck2" title="Clubs 3">
+                    <img class="card-img" src="assets/images/cards/clubs_3.png" />
+                </div>
+                <div class="card row-four clubs_2 deck2" title="Clubs 2">
+                    <img class="card-img" src="assets/images/cards/clubs_2.png" />
+                </div>
+                <div class="card row-four diamonds_8 deck1" title="Diamonds 8">
+                    <img class="card-img" src="assets/images/cards/diamonds_8.png" />
+                </div>
+                <div class="card row-four hearts_8 deck1" title="Hearts 8">
+                    <img class="card-img" src="assets/images/cards/hearts_8.png" />
+                </div>
+                <div class="card row-four spades_K deck2" title="Spades K">
+                    <img class="card-img" src="assets/images/cards/spades_K.png" />
+                </div>
+                <div class="card row-five clubs_9 deck1" title="Clubs 9">
+                    <img class="card-img" src="assets/images/cards/clubs_9.png" />
+                </div>
+                <div class="card row-five spades_Q deck2" title="Spades Q">
+                    <img class="card-img" src="assets/images/cards/spades_Q.png" />
+                </div>
+                <div class="card row-five clubs_7 deck2" title="Clubs 7">
+                    <img class="card-img" src="assets/images/cards/clubs_7.png" />
+                </div>
+                <div class="card row-five hearts_6 deck1" title="Hearts 6">
+                    <img class="card-img" src="assets/images/cards/hearts_6.png" />
+                </div>
+                <div class="card row-five hearts_5 deck1" title="Hearts 5">
+                    <img class="card-img" src="assets/images/cards/hearts_5.png" />
+                </div>
+                <div class="card row-five hearts_4 deck1" title="Hearts 4">
+                    <img class="card-img" src="assets/images/cards/hearts_4.png" />
+                </div>
+                <div class="card row-five hearts_A deck2" title="Hearts A">
+                    <img class="card-img" src="assets/images/cards/hearts_A.png" />
+                </div>
+                <div class="card row-five diamonds_9 deck1" title="Diamonds 9">
+                    <img class="card-img" src="assets/images/cards/diamonds_9.png" />
+                </div>
+                <div class="card row-five hearts_7 deck1" title="Hearts 7">
+                    <img class="card-img" src="assets/images/cards/hearts_7.png" />
+                </div>
+                <div class="card row-five spades_A deck2" title="Spades A">
+                    <img class="card-img" src="assets/images/cards/spades_A.png" />
+                </div>
+                <div class="card row-six clubs_10 deck1" title="Clubs 10">
+                    <img class="card-img" src="assets/images/cards/clubs_10.png" />
+                </div>
+                <div class="card row-six spades_10 deck2" title="Spades 10">
+                    <img class="card-img" src="assets/images/cards/spades_10.png" />
+                </div>
+                <div class="card row-six clubs_8 deck2" title="Clubs 8">
+                    <img class="card-img" src="assets/images/cards/clubs_8.png" />
+                </div>
+                <div class="card row-six hearts_7 deck2" title="Hearts 7">
+                    <img class="card-img" src="assets/images/cards/hearts_7.png" />
+                </div>
+                <div class="card row-six hearts_2 deck1" title="Hearts 2">
+                    <img class="card-img" src="assets/images/cards/hearts_2.png" />
+                </div>
+                <div class="card row-six hearts_3 deck1" title="Hearts 3">
+                    <img class="card-img" src="assets/images/cards/hearts_3.png" />
+                </div>
+                <div class="card row-six hearts_K deck2" title="Hearts K">
+                    <img class="card-img" src="assets/images/cards/hearts_K.png" />
+                </div>
+                <div class="card row-six diamonds_10 deck1" title="Diamonds 10">
+                    <img class="card-img" src="assets/images/cards/diamonds_10.png" />
+                </div>
+                <div class="card row-six hearts_6 deck2" title="Hearts 6">
+                    <img class="card-img" src="assets/images/cards/hearts_6.png" />
+                </div>
+                <div class="card row-six diamonds_2 deck2" title="Diamonds 2">
+                    <img class="card-img" src="assets/images/cards/diamonds_2.png" />
+                </div>
+                <div class="card row-seven clubs_Q deck1" title="Clubs Q">
+                    <img class="card-img" src="assets/images/cards/clubs_Q.png" />
+                </div>
+                <div class="card row-seven spades_9 deck2" title="Spades 9">
+                    <img class="card-img" src="assets/images/cards/spades_9.png" />
+                </div>
+                <div class="card row-seven clubs_9 deck2" title="Clubs 9">
+                    <img class="card-img" src="assets/images/cards/clubs_9.png" />
+                </div>
+                <div class="card row-seven hearts_8 deck2" title="Hearts 8">
+                    <img class="card-img" src="assets/images/cards/hearts_8.png" />
+                </div>
+                <div class="card row-seven hearts_9 deck2" title="Hearts 9">
+                    <img class="card-img" src="assets/images/cards/hearts_9.png" />
+                </div>
+                <div class="card row-seven hearts_10 deck2" title="Hearts 10">
+                    <img class="card-img" src="assets/images/cards/hearts_10.png" />
+                </div>
+                <div class="card row-seven hearts_Q deck2" title="Hearts Q">
+                    <img class="card-img" src="assets/images/cards/hearts_Q.png" />
+                </div>
+                <div class="card row-seven diamonds_Q deck1" title="Diamonds Q">
+                    <img class="card-img" src="assets/images/cards/diamonds_Q.png" />
+                </div>
+                <div class="card row-seven hearts_5 deck2" title="Hearts 5">
+                    <img class="card-img" src="assets/images/cards/hearts_5.png" />
+                </div>
+                <div class="card row-seven diamonds_3 deck2" title="Diamonds 3">
+                    <img class="card-img" src="assets/images/cards/diamonds_3.png" />
+                </div>
+                <div class="card row-eight clubs_K deck1" title="Clubs K">
+                    <img class="card-img" src="assets/images/cards/clubs_K.png" />
+                </div>
+                <div class="card row-eight spades_8 deck2" title="Spades 8">
+                    <img class="card-img" src="assets/images/cards/spades_8.png" />
+                </div>
+                <div class="card row-eight clubs_10 deck2" title="Clubs 10">
+                    <img class="card-img" src="assets/images/cards/clubs_10.png" />
+                </div>
+                <div class="card row-eight clubs_Q deck2" title="Clubs Q">
+                    <img class="card-img" src="assets/images/cards/clubs_Q.png" />
+                </div>
+                <div class="card row-eight clubs_K deck2" title="Clubs K">
+                    <img class="card-img" src="assets/images/cards/clubs_K.png" />
+                </div>
+                <div class="card row-eight clubs_A deck1" title="Clubs A">
+                    <img class="card-img" src="assets/images/cards/clubs_A.png" />
+                </div>
+                <div class="card row-eight diamonds_A deck1" title="Diamonds A">
+                    <img class="card-img" src="assets/images/cards/diamonds_A.png" />
+                </div>
+                <div class="card row-eight diamonds_K deck1" title="Diamonds K">
+                    <img class="card-img" src="assets/images/cards/diamonds_K.png" />
+                </div>
+                <div class="card row-eight hearts_4 deck2" title="Hearts 4">
+                    <img class="card-img" src="assets/images/cards/hearts_4.png" />
+                </div>
+                <div class="card row-eight diamonds_4 deck2" title="Diamonds 4">
+                    <img class="card-img" src="assets/images/cards/diamonds_4.png" />
+                </div>
+                <div class="card row-nine clubs_A deck2" title="Clubs A">
+                    <img class="card-img" src="assets/images/cards/clubs_A.png" />
+                </div>
+                <div class="card row-nine spades_7 deck2" title="Spades 7">
+                    <img class="card-img" src="assets/images/cards/spades_7.png" />
+                </div>
+                <div class="card row-nine spades_6 deck2" title="Spades 6">
+                    <img class="card-img" src="assets/images/cards/spades_6.png" />
+                </div>
+                <div class="card row-nine spades_5 deck2" title="Spades 5">
+                    <img class="card-img" src="assets/images/cards/spades_5.png" />
+                </div>
+                <div class="card row-nine spades_4 set 2" title="Spades 4">
+                    <img class="card-img" src="assets/images/cards/spades_4.png" />
+                </div>
+                <div class="card row-nine spades_3 deck2" title="Spades 3">
+                    <img class="card-img" src="assets/images/cards/spades_3.png" />
+                </div>
+                <div class="card row-nine spades_2 deck2" title="Spades 2">
+                    <img class="card-img" src="assets/images/cards/spades_2.png" />
+                </div>
+                <div class="card row-nine hearts_2 deck2" title="Hearts 2">
+                    <img class="card-img" src="assets/images/cards/hearts_2.png" />
+                </div>
+                <div class="card row-nine hearts_3 deck2" title="Hearts 3">
+                    <img class="card-img" src="assets/images/cards/hearts_3.png" />
+                </div>
+                <div class="card row-nine diamonds_5 deck2" title="Diamonds 5">
+                    <img class="card-img" src="assets/images/cards/diamonds_5.png" />
+                </div>
+                <div class="card row-ten empty" title="empty">
+                    <img class="card-img" src="assets/images/cards/empty.png" />
+                </div>
+                <div class="card row-ten diamonds_A deck2" title="Diamonds A">
+                    <img class="card-img" src="assets/images/cards/diamonds_A.png" />
+                </div>
+                <div class="card row-ten diamonds_K deck2" title="Diamonds K">
+                    <img class="card-img" src="assets/images/cards/diamonds_K.png" />
+                </div>
+                <div class="card row-ten diamonds_Q deck2" title="Diamonds Q">
+                    <img class="card-img" src="assets/images/cards/diamonds_Q.png" />
+                </div>
+                <div class="card row-ten diamonds_10 deck2" title="Diamonds 10">
+                    <img class="card-img" src="assets/images/cards/diamonds_10.png" />
+                </div>
+                <div class="card row-ten diamonds_9 deck2" title="Diamonds 9">
+                    <img class="card-img" src="assets/images/cards/diamonds_9.png" />
+                </div>
+                <div class="card row-ten diamonds_8 deck2" title="Diamonds 8">
+                    <img class="card-img" src="assets/images/cards/diamonds_8.png" />
+                </div>
+                <div class="card row-ten diamonds_7 deck2" title="Diamonds 7">
+                    <img class="card-img" src="assets/images/cards/diamonds_7.png" />
+                </div>
+                <div class="card row-ten diamonds_6 deck2" title="Diamonds 6">
+                    <img class="card-img" src="assets/images/cards/diamonds_6.png" />
+                </div>
+                <div class="card row-ten empty" title="empty">
+                    <img class="card-img" src="assets/images/cards/empty.png" />
+                </div>
+            </div>
+        </div>
+        <div class="play-container">
+            <div class="cards-container">
+                <span class="message">Waiting for leader to start the round....</span>
+            </div>
+            <div class="status-container">
+                <div class="players-list"><ul class="players"></ul></div>
+                <div class="discard-container">
+                    <img src="assets/images/cards/empty.png" alt="discard pile" class="discard-pile">
+                </div>
+            </div>
+            <div class="action-container">
+                <div class="button-container">
+                    <button class="button disabled-button play" onclick="play(event)">Play card</button>
+                    <button class="button disabled-button draw" onclick="draw(event)">Draw card</button>
+                    <button class="button disabled-button dead" onclick="checkDead(event)">Claim dead</button>
+                    <button class="button disabled-button start" onclick="startEnable(event)">Start</button>
+                    <button class="button logout" onclick="logout(event)">Logout</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="js/seq.js"></script>
+</body>
+</html>

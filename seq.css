@@ -1,0 +1,305 @@
+* {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    color:white;
+}
+
+html, body, #root {
+    width: 100ww;
+    height: 100vh;
+}
+
+body {
+    background: #222222;
+}
+
+.board-container {
+    width: 60vw;
+    height: 100vh;
+    float: left;
+    border: 1px solid #c7c6c6;
+    background: rgb(66, 66, 66);
+}
+
+.board {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: repeat(10, auto);
+    grid-template-rows: repeat(10, 1fr);
+    /* grid-gap: 10px; */
+}
+
+.card {
+    min-height: 0;
+    min-width: 0;
+    margin: 5px;
+}
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.play-container {
+    width: 37vw;
+    height: 100vh;
+    float: right;
+    background: rgb(66, 66, 66);
+}
+
+.cards-container{
+    height: 40vh;
+    border: 1px solid #c7c6c6; 
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 15%;
+    justify-content: center;
+}
+
+.hand {
+    flex-basis: 12%;
+}
+
+.message {
+    position: relative;
+    top : 50%;
+    left: 1%;
+    font-weight: 900;
+}
+
+.action-container {
+    height: 40vh;
+    border: 1px solid #c7c6c6;
+}
+
+.status-container {
+    height: 20vh;
+    border: 1px solid #c7c6c6;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-basis: 50%;
+    background-color: rgb(48, 48, 48);
+}
+
+.button-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    width: 100%;
+}
+
+.button {
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    padding: 15px 32px;
+    background-color: #008CBA;
+    color: white;
+    text-decoration: none;
+    border-radius: 2px;
+    transition-duration: 0.3ms;
+    width: 50%;
+    margin: 0.1%;
+    cursor: pointer;
+}
+
+.play-button:hover {
+    background-color: #009ace;
+}
+
+.disabled-button {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.remove-button {
+    display: none;
+}
+
+.signin-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(59, 57, 57, 0.98);
+    z-index: 3;
+    overflow-y: auto;
+    cursor: pointer;
+}
+
+.signin-modal-is-hidden {
+    visibility: hidden;
+}
+
+.signin-box {
+    position: absolute;
+    max-width: 600px;
+    background-color: #202020;
+    cursor: auto;
+    display: block;
+    width: 90%;
+    margin: auto;
+    height: 50%;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.signin-form {
+    position: absolute;
+    margin: auto;
+    width: 50%;
+    height: 75%;
+    top: 0; left: 0; bottom: 0; right: 0;   
+}
+
+.input-container {
+    position: relative;
+    box-sizing: border-box;
+    color: white;
+    display: block;
+    border-bottom: 1px solid #008CBA;
+    margin-top: 10px;
+}
+
+.input-box {
+    width: 100%;
+    background-color: #202020;
+    caret-color: white;
+    color : white;
+    height: 40px;
+}
+
+.login-submit {
+    color:  #c2c2c2;
+    background-color: #008CBA;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    font-weight: 500;
+}
+
+.start-container {
+    position: absolute;
+    max-width: 500px;
+    background-color: #202020;
+    cursor: auto;
+    display: block;
+    width: 90%;
+    margin: auto;
+    height: 40%;
+    top: 0; left: 0; bottom: 0; right: 0;
+    color: white;
+}
+
+.start-container-hidden {
+    visibility: hidden;
+}
+
+.start-form {
+    position: absolute;
+    margin: auto;
+    width: 50%;
+    height: 50%;
+    top: 0; left: 0; bottom: 0; right: 0;  
+}
+
+.admin-submit {
+    background-color: #008CBA;
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.discard-container {
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.players-list {
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ul {
+    list-style: none;
+    text-align: center;
+}
+
+.list-red::before {
+    content: "■ ";
+    color: red;
+    display: inline-block;
+}
+
+.list-green::before {
+    content: "■ ";
+    color: green;
+    display: inline-block;
+}
+
+.list-blue::before {
+    content: "■ ";
+    color: blue;
+    display: inline-block;
+}
+
+.hand-card {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+}
+
+.discard-pile {
+    width: 100%;
+    height: 90%;
+    object-fit: contain;
+}
+
+.highlight {
+    border: 2px solid #008CBA;
+}
+
+.selected {
+    border: 2px solid #00df00;
+}
+
+.special {
+    border: 2px solid #dfdb00;
+}
+
+.player-highlight {
+    background: rgba(0, 140, 186, 0.5);
+    font-weight: bolder;
+}
+
+.blue-mask {
+    filter: invert(7%) sepia(99%) saturate(7456%) hue-rotate(248deg) brightness(103%) contrast(143%);
+    /* filter: invert(34%) sepia(86%) saturate(7469%) hue-rotate(354deg) brightness(93%) contrast(127%); */
+}
+
+.green-mask {
+    filter: invert(50%) sepia(81%) saturate(1962%) hue-rotate(86deg) brightness(118%) contrast(126%);
+}
+
+.red-mask {
+    filter: invert(34%) sepia(86%) saturate(7469%) hue-rotate(354deg) brightness(93%) contrast(127%);
+}

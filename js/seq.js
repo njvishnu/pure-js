@@ -584,7 +584,7 @@ function loginUser(event) {
         alert('Invalid input')
         return;
     }
-    API_BASE_URL = "http://" + h.replace(/\/$/, "");
+    API_BASE_URL = h.replace(/\/$/, "");
     let data = JSON.stringify({ username: u, password: p });
 
     player.user = u;

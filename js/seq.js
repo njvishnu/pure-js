@@ -8,31 +8,43 @@ const TEAM_MAP = new Map([['1','red'], ['2','green'],['3','blue']]);
 const IMG_BASE = "assets/images/cards/";
 const TWO_EYED_JACKS = ["diamonds","clubs"];
 const ONE_EYED_JACKS = ["spades","hearts"];
+const MAX_RETRY_ATTEMPTS = 20;
 
 class RequestService {
-    async getResponse(url, h, m, b) {
-        let config = {
-            headers: h,
-            method: m,
-            body: b,
-        };
-        let data = await (await (fetch(url, { headers: h, method: m, body: b })
-            .then((res) => {
-                // error handling done by caller
-                if(!res.ok) {
-                    // TODO Do something 
-                }
-                return res.json();  
-            })
-            .catch((err) => {
-                /* 
-                 * This block is called only if the actual request fails. 
-                 * For ex. Network failures. 4xx and 5xx requests do not get here 
-                 */
-                console.log("Error in fetching data : " + err);
-            })
-        ));
-        return data
+    async getResponse(url, h, m, b, r) {
+        let retries = r;
+        while(true) {
+            let data = await (await (fetch(url, { headers: h, method: m, body: b })
+                .then((res) => {
+                    if(!res.ok) {
+                        if(retries == 0) {
+                            console.log("Max attempts reached from server error");
+                            //throw new Error("Max attempts reached");
+                        } 
+                        console.log("error")
+                        throw new Error(res.statusText);
+                    }
+                    return res.json();  
+                })
+                .catch((err) => {
+                    /* 
+                    * This block is called only if the actual request fails. 
+                    * For ex. Network failures, DNS Lookup failures, server down...
+                    */
+                   setTimeout(function() {}, 1000); // wait for 1 second
+                   if(retries == 0) {
+                       console.log("Max attempts reached from network error")
+                       throw err;
+                   }
+                    console.log("Error in fetching data : " + err);
+                })
+            ));
+            if(data) {
+                return data;
+            }
+            retries--;
+        }
+        //return data;
     }
 }
 
@@ -105,7 +117,6 @@ const poll = async ({fn, interval, maxAttempt}) => {
 	let attempt = 0;
 	const exec = async (resolve, reject) => {
 		attempt++;
-		console.log('attempt ' + attempt );
 		const response = await fn();
 		if(response['message'] == "Ready") {
 			return resolve(response);
@@ -157,7 +168,7 @@ function getState() {
         let headers = generateJsonHeader();
         headers.append("Authorization", "bearer " + player.token);
         let data = JSON.stringify({player:player.id});
-        req.getResponse(url, headers, "POST", data).then( (response) => {
+        req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then( (response) => {
             // Waiting means waiting for your turn. Others might have played.
             if(response["message"] == "Waiting") {
                 handleWait(response);
@@ -453,7 +464,7 @@ function play(event) {
         headers.append("Authorization", "bearer " + player.token);
         let data = JSON.stringify({player:player.id, card:c, deck:d, special:jType});
         
-        req.getResponse(url, headers, "POST", data).then( (response) => {
+        req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then( (response) => {
             //remove all highlihgts and selections
             let h = document.querySelectorAll('.highlight');
             if(h!==null) {
@@ -556,7 +567,7 @@ function draw(event) {
     let headers = generateJsonHeader();
     headers.append("Authorization", "bearer " + player.token);
     let data = JSON.stringify({player:player.id});
-    req.getResponse(url,headers, "POST", data).then( (response) => {
+    req.getResponse(url,headers, "POST", data, MAX_RETRY_ATTEMPTS).then( (response) => {
 
         let card = translateCards( response['card'], "client");
         let cardsContainer = document.querySelector('.cards-container');
@@ -592,7 +603,7 @@ function loginUser(event) {
     let url = API_BASE_URL + "/login";
     console.log(url);
     req
-        .getResponse(url, headers, "POST", data)
+        .getResponse(url, headers, "POST", data, 1)
         .then( (response) => {
             loginState = 1;
             player.token = response['token'];
@@ -613,7 +624,7 @@ function loginUser(event) {
             headers.append("Authorization", "bearer " + player.token);
             let data = JSON.stringify({player:player.id});
             const a = poll({
-                fn: () => req.getResponse(url, headers, "POST", data),
+                fn: () => req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS),
                 interval: POLLING_INTERVAL,
                 maxAttempt: 100
             }).then( (response) => {
@@ -623,7 +634,9 @@ function loginUser(event) {
                 initState(response);
             }).catch(err => console.log(err));
         }).catch( error => {
-            // TODO Handle login failure
+            if(error.message === "UNAUTHORIZED" && loginState == 0 ) {
+                alert("Incorrect username/password")
+            }
             console.log(error);
         });
 }
@@ -746,7 +759,7 @@ function start(event) {
     let url = API_BASE_URL + "/start";
     let data = JSON.stringify({ count: c });
     headers.append("Authorization", "bearer " + player.token);
-    req.getResponse(url, headers, "POST", data).then((response) => {
+    req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then((response) => {
         // assuming valid response
         // Just check if success
         document.querySelector('.start-container').classList.add('start-container-hidden');
@@ -759,7 +772,7 @@ function newGame(event) {
     let headers = generateJsonHeader();
     headers.append("Authorization", "bearer " + player.token);
     let data = JSON.stringify({player:player.id});
-    req.getResponse(url, headers, "POST", data).then( (response) => {
+    req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then( (response) => {
         alert("New game initialized!")
         document.querySelector('.start-container').classList.add('start-container-hidden');
     });
@@ -776,7 +789,7 @@ function logout() {
         data = JSON.stringify({player:p});
     }
     headers.append("Authorization", "bearer " + player.token);
-    req.getResponse(url, headers, "POST", data).then((response) => {
+    req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then((response) => {
         loginState = 0;
         console.log("Logged out");
         // Hack - since this is a single page app
@@ -819,7 +832,7 @@ function checkDead(event) {
                 let p = player.id;
                 data = JSON.stringify({player:p, card:c});
                 headers.append("Authorization", "bearer " + player.token);
-                req.getResponse(url, headers, "POST", data).then((response) => {
+                req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then((response) => {
                     let handCard = document.querySelector(".hand-card." + c);
                     if(handCard !== null) {
                         let cardContainer = handCard.parentElement;

@@ -294,7 +294,8 @@ function handleReady(response) {
                 let j = translateCards(special, "client");
             }
             else if(ONE_EYED_JACKS.includes(j.split('_')[0])) {
-                document.querySelector("." + card + "." + deck).classList.remove(TEAM_MAP.get(team) + "-mask");
+                let a = document.querySelector("." + card + "." + deck).classList[4];
+                document.querySelector("." + card + "." + deck).classList.remove(a);
                 let j = translateCards(special, "client");
             }
         }
@@ -337,7 +338,8 @@ function handleWait( response) {
                     let j = translateCards(special, "client");
                 }
                 else if(ONE_EYED_JACKS.includes(j.split('_')[0])) {
-                    document.querySelector("." + card + "." + deck).classList.remove(TEAM_MAP.get(team) + "-mask");
+                    let a = document.querySelector("." + card + "." + deck).classList[4];
+                    document.querySelector("." + card + "." + deck).classList.remove(a);
                     let j = translateCards(special, "client");
                 }
             }
@@ -898,3 +900,4 @@ function generateJsonHeader() {
         "Content-Type": "application/json",
     });
 }
+nd

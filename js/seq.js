@@ -4,7 +4,7 @@
 var API_BASE_URL;
 const POLLING_INTERVAL = 5000; // poll every 5 seconds
 const MAX_ATTEMPTS = 180; // Half an hour should be more than enough
-const TEAM_MAP = new Map([['1','red'], ['2','green'],['3','blue']]);
+const TEAM_MAP = new Map([['1','blue'], ['2','red'],['3','green']]);
 const IMG_BASE = "assets/images/cards/";
 const SOUND_BASE = "assets/images/sounds/";
 const TWO_EYED_JACKS = ["diamonds","clubs"];

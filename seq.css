@@ -287,19 +287,20 @@ ul {
 }
 
 .player-highlight {
-    background: rgba(0, 140, 186, 0.5);
+    background: rgba(2, 192, 255, 0.5);
     font-weight: bolder;
 }
 
 .blue-mask {
-    filter: invert(7%) sepia(99%) saturate(7456%) hue-rotate(248deg) brightness(103%) contrast(143%);
-    /* filter: invert(34%) sepia(86%) saturate(7469%) hue-rotate(354deg) brightness(93%) contrast(127%); */
+    filter: invert(9%) sepia(99%) saturate(7299%) hue-rotate(248deg) brightness(90%) contrast(144%);
 }
 
 .green-mask {
-    filter: invert(50%) sepia(81%) saturate(1962%) hue-rotate(86deg) brightness(118%) contrast(126%);
+    /* filter: invert(50%) sepia(81%) saturate(1962%) hue-rotate(86deg) brightness(118%) contrast(126%); */
+    filter: invert(50%) sepia(81%) saturate(500%) hue-rotate(86deg) brightness(100%) contrast(126%);
 }
 
 .red-mask {
-    filter: invert(34%) sepia(86%) saturate(7469%) hue-rotate(354deg) brightness(93%) contrast(127%);
+    /* filter: invert(34%) sepia(86%) saturate(7469%) hue-rotate(354deg) brightness(93%) contrast(127%); */
+    filter: invert(34%) sepia(86%) saturate(2000%) hue-rotate(354deg) brightness(93%) contrast(127%);
 }

@@ -6,6 +6,7 @@ const POLLING_INTERVAL = 5000; // poll every 5 seconds
 const MAX_ATTEMPTS = 180; // Half an hour should be more than enough
 const TEAM_MAP = new Map([['1','red'], ['2','green'],['3','blue']]);
 const IMG_BASE = "assets/images/cards/";
+const SOUND_BASE = "assets/images/sounds/";
 const TWO_EYED_JACKS = ["diamonds","clubs"];
 const ONE_EYED_JACKS = ["spades","hearts"];
 const MAX_RETRY_ATTEMPTS = 20;
@@ -168,7 +169,7 @@ function getState() {
         let headers = generateJsonHeader();
         headers.append("Authorization", "bearer " + player.token);
         let data = JSON.stringify({player:player.id});
-        req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then( (response) => {
+        req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then( (response) => {   
             // Waiting means waiting for your turn. Others might have played.
             if(response["message"] == "Waiting") {
                 handleWait(response);
@@ -258,7 +259,12 @@ function handleNew(response) {
 
 function handleReady(response) {
     // Need to compare since we are waiting
-    if(!compareResp(previousState, response)) { 
+    if(!compareResp(previousState, response)) {
+        previousState = response;
+        // play sound
+        let audio = document.getElementById("audio");
+        audio.play();
+        
         let card = translateCards(response["card"], "client");
         let deck = response["deck"];
         let next = response["next"];
@@ -303,6 +309,11 @@ function handleReady(response) {
 function handleWait( response) {
     // Need to compare since the state might have changed while still "waiting" for turn
     if(!compareResp(previousState, response)) {
+        previousState = response;
+        // play sound
+        let audio = document.getElementById("audio");
+        audio.play();
+        
         if(response["last"] != player.username) { // checking if last player was same as you
             let card = translateCards(response["card"], "client");
             let deck = response["deck"];
@@ -465,6 +476,10 @@ function play(event) {
         let data = JSON.stringify({player:player.id, card:c, deck:d, special:jType});
         
         req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then( (response) => {
+            // play sound
+            let audio = document.getElementById("audio");
+            audio.play();
+
             //remove all highlihgts and selections
             let h = document.querySelectorAll('.highlight');
             if(h!==null) {

@@ -842,7 +842,8 @@ function checkDead(event) {
                 alert('This card is not dead');
             }
             else {
-                let c = a.classList[1];
+                let card = a.classList[1];
+                let c = translateCards(card, "server");
                 let headers = generateJsonHeader();
                 let url = API_BASE_URL + "/dead";
                 let data;
@@ -850,7 +851,7 @@ function checkDead(event) {
                 data = JSON.stringify({player:p, card:c});
                 headers.append("Authorization", "bearer " + player.token);
                 req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then((response) => {
-                    let handCard = document.querySelector(".hand-card." + c);
+                    let handCard = document.querySelector(".hand-card." + card);
                     if(handCard !== null) {
                         let cardContainer = handCard.parentElement;
                         cardContainer.parentElement.removeChild(cardContainer);
@@ -900,4 +901,3 @@ function generateJsonHeader() {
         "Content-Type": "application/json",
     });
 }
-nd

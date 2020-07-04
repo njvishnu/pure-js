@@ -283,11 +283,11 @@ function handleReady(response) {
         if(special != '') {
             let j = translateCards(response["special"], "client");
             document.querySelector('.discard-pile').src = IMG_BASE + j + ".png";
-            if(TWO_EYED_JACKS.includes(j.split('_')[1])) {
+            if(TWO_EYED_JACKS.includes(j.split('_')[0])) {
                 document.querySelector("." + card + "." + deck).classList.add(TEAM_MAP.get(team) + "-mask");
                 let j = translateCards(special, "client");
             }
-            else if(ONE_EYED_JACKS.includes(j.split('_')[1])) {
+            else if(ONE_EYED_JACKS.includes(j.split('_')[0])) {
                 document.querySelector("." + card + "." + deck).classList.remove(TEAM_MAP.get(team) + "-mask");
                 let j = translateCards(special, "client");
             }
@@ -321,11 +321,11 @@ function handleWait( response) {
             if(special != '') {
                 let j = translateCards(response["special"], "client");
                 document.querySelector('.discard-pile').src = IMG_BASE + j + ".png";
-                if(TWO_EYED_JACKS.includes(j.split('_')[1])) {
+                if(TWO_EYED_JACKS.includes(j.split('_')[0])) {
                     document.querySelector("." + card + "." + deck).classList.add(TEAM_MAP.get(team) + "-mask");
                     let j = translateCards(special, "client");
                 }
-                else if(ONE_EYED_JACKS.includes(j.split('_')[1])) {
+                else if(ONE_EYED_JACKS.includes(j.split('_')[0])) {
                     document.querySelector("." + card + "." + deck).classList.remove(TEAM_MAP.get(team) + "-mask");
                     let j = translateCards(special, "client");
                 }

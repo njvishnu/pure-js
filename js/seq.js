@@ -2,7 +2,8 @@
 
 // var API_BASE_URL = "http://127.0.0.1:5000";
 var API_BASE_URL;
-const POLLING_INTERVAL = 5000; // poll every 5 seconds
+const SHORT_POLLING_INTERVAL = 5000; // poll every 5 seconds
+const LONG_POLLING_INTERVAL = 20000; // poll every 5 seconds
 const MAX_ATTEMPTS = 180; // Half an hour should be more than enough
 const TEAM_MAP = new Map([['1','blue'], ['2','red'],['3','green']]);
 const IMG_BASE = "assets/images/cards/";
@@ -20,7 +21,6 @@ class RequestService {
                     if(!res.ok) {
                         if(retries == 0) {
                             console.log("Max attempts reached from server error");
-                            //throw new Error("Max attempts reached");
                         } 
                         console.log("error")
                         throw new Error(res.statusText);
@@ -136,16 +136,52 @@ window.onload = (event) => {
     // Let the poll begin
     const a = poll({
         fn: checkStart,
-        interval: POLLING_INTERVAL,
+        interval: SHORT_POLLING_INTERVAL,
         maxAttempt: 100000000
     }).then( (response) => {
         const a = poll({
             fn: getState,
-            interval: POLLING_INTERVAL,
+            interval: SHORT_POLLING_INTERVAL,
             maxAttempt: 10000000,
         });
     });
+
+    const b = poll({
+        fn: getOnline,
+        interval: LONG_POLLING_INTERVAL,
+        maxAttempt: 100000000
+    })
 };
+
+function getOnline() {
+    let response ;
+    if (loginState == 0) {
+        // return "Ready" when user has logged out or not logged in.
+        response = '{"message":"Waiting"}';
+        return JSON.parse(response);
+    }
+    else {
+        let url = API_BASE_URL + "/online";
+        let headers = generateJsonHeader();
+        headers.append("Authorization", "bearer " + player.token);
+        let data = {};
+        req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS).then( (response) => {   
+            // cleanup users
+            let users = document.querySelector('.users');
+            users.innerHTML = '';
+            let u = response["users"];
+            u.forEach( element => {
+                let elem = document.createElement("LI");
+                elem.classList.add('online-user');
+                elem.innerText = element;
+                users.appendChild(elem);
+            });
+
+        });
+        response = '{"message":"Processing"}';
+        return JSON.parse(response); 
+    }
+}
 
 function checkStart() {
     let response;
@@ -642,7 +678,7 @@ function loginUser(event) {
             let data = JSON.stringify({player:player.id});
             const a = poll({
                 fn: () => req.getResponse(url, headers, "POST", data, MAX_RETRY_ATTEMPTS),
-                interval: POLLING_INTERVAL,
+                interval: SHORT_POLLING_INTERVAL,
                 maxAttempt: 100
             }).then( (response) => {
                 startState = 1;

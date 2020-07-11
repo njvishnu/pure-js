@@ -317,37 +317,27 @@ ul {
 }
 
 .green-mask {
-    /* filter: invert(50%) sepia(81%) saturate(1962%) hue-rotate(86deg) brightness(118%) contrast(126%); */
-    filter: invert(50%) sepia(81%) saturate(500%) hue-rotate(86deg) brightness(100%) contrast(126%);
+    filter: invert(50%) sepia(81%) saturate(1962%) hue-rotate(86deg) brightness(118%) contrast(126%);
+    /* filter: invert(50%) sepia(81%) saturate(500%) hue-rotate(86deg) brightness(100%) contrast(126%); */
 }
 
 .red-mask {
-    /* filter: invert(34%) sepia(86%) saturate(7469%) hue-rotate(354deg) brightness(93%) contrast(127%); */
-    filter: invert(34%) sepia(86%) saturate(2000%) hue-rotate(354deg) brightness(93%) contrast(127%);
+    filter: invert(34%) sepia(86%) saturate(7469%) hue-rotate(354deg) brightness(93%) contrast(127%);
+    /* filter: invert(34%) sepia(86%) saturate(2000%) hue-rotate(354deg) brightness(93%) contrast(127%); */
 }
 
-.shake-card {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-    animation-iteration-count: 70;
-  }
-  
-  @keyframes shake {
-    10%, 90% {
-      transform: translate3d(-1px, 0, 0);
+.hover-effect {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+      opacity: 0%;
     }
-    
-    20%, 80% {
-      transform: translate3d(2px, 0, 0);
+    50% {
+      opacity: 100%;;
     }
-  
-    30%, 50%, 70% {
-      transform: translate3d(-4px, 0, 0);
-    }
-  
-    40%, 60% {
-      transform: translate3d(4px, 0, 0);
+    100% {
+      opacity: 0%;;
     }
   }

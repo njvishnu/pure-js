@@ -5,7 +5,7 @@ var API_BASE_URL;
 const SHORT_POLLING_INTERVAL = 5000; // poll every 5 seconds
 const LONG_POLLING_INTERVAL = 20000; // poll every 5 seconds
 const MAX_ATTEMPTS = 180; // Half an hour should be more than enough
-const TEAM_MAP = new Map([['1','blue'], ['2','red'],['3','green']]);
+const TEAM_MAP = new Map([['1','green'], ['2','red'],['3','blue']]);
 const IMG_BASE = "assets/images/cards/";
 const SOUND_BASE = "assets/images/sounds/";
 const TWO_EYED_JACKS = ["diamonds","clubs"];
@@ -322,23 +322,29 @@ function handleReady(response) {
                 }
             });
         }
+
+        let dp = document.querySelector('.discard-pile');
+        dp.classList.add(card, deck);
         if(special != '') {
             let j = translateCards(response["special"], "client");
-            document.querySelector('.discard-pile').src = IMG_BASE + j + ".png";
             if(TWO_EYED_JACKS.includes(j.split('_')[0])) {
                 document.querySelector("." + card + "." + deck).classList.add(TEAM_MAP.get(team) + "-mask");
                 let j = translateCards(special, "client");
+                dp.classList.add(TEAM_MAP.get(team));
             }
             else if(ONE_EYED_JACKS.includes(j.split('_')[0])) {
                 let a = document.querySelector("." + card + "." + deck).classList[4];
                 document.querySelector("." + card + "." + deck).classList.remove(a);
                 let j = translateCards(special, "client");
+                dp.classList.add(a.split("-")[0]);
             }
+            dp.src = IMG_BASE + j + ".png";
+            dp.classList.add(j, "special");
         }
         else {
             document.querySelector("." + card + "." + deck).classList.add(TEAM_MAP.get(team) + "-mask");
-            document.querySelector('.discard-pile').src = IMG_BASE + card + ".png";
-            // TODO update next player
+            dp.src = IMG_BASE + card + ".png";
+            dp.classList.add(TEAM_MAP.get(team));
         }
     }
 }
@@ -366,23 +372,28 @@ function handleWait( response) {
             if(pl !== null){
                 pl.classList.add('player-highlight');
             }
+            let dp = document.querySelector('.discard-pile');
+            dp.classList.add(card, deck);
             if(special != '') {
                 let j = translateCards(response["special"], "client");
-                document.querySelector('.discard-pile').src = IMG_BASE + j + ".png";
                 if(TWO_EYED_JACKS.includes(j.split('_')[0])) {
                     document.querySelector("." + card + "." + deck).classList.add(TEAM_MAP.get(team) + "-mask");
                     let j = translateCards(special, "client");
+                    dp.classList.add(TEAM_MAP.get(team));
                 }
                 else if(ONE_EYED_JACKS.includes(j.split('_')[0])) {
                     let a = document.querySelector("." + card + "." + deck).classList[4];
                     document.querySelector("." + card + "." + deck).classList.remove(a);
                     let j = translateCards(special, "client");
+                    dp.classList.add(a.split("-")[0]);
                 }
+                dp.src = IMG_BASE + j + ".png";
+                dp.classList.add(j,"special");
             }
             else {
                 document.querySelector("." + card + "." + deck).classList.add(TEAM_MAP.get(team) + "-mask");
-                document.querySelector('.discard-pile').src = IMG_BASE + card + ".png";
-                // TODO update next player
+                dp.src = IMG_BASE + card + ".png";
+                dp.classList.add(TEAM_MAP.get(team));
             }
         }
         else {
@@ -527,35 +538,43 @@ function play(event) {
             }
             selection.classList.remove("selected"); // there will be only one selected
 
+            let dp = document.querySelector('.discard-pile');
+            dp.classList.add(selection.classList[2], selection.classList[3]);
             // remove card from player card list
             if(jFlag) {
                 let s = document.querySelector('.special');
                 if(s !== null) {
                     let cardContainer = s.parentElement;
                     cardContainer.parentElement.removeChild(cardContainer);
-                    // Add to discard pile
-                    document.querySelector('.discard-pile').src = IMG_BASE + s.classList[1] + ".png";
                 }
                 if(TWO_EYED_JACKS.includes(jType.split(":")[1].toLowerCase())) {
                     selection.classList.add(player.team + '-mask');
+                    dp.classList.add(player.team);
                 }
                 else if(ONE_EYED_JACKS.includes(jType.split(":")[1].toLowerCase())) {
                     if(selection.classList.contains('blue-mask') && player.team !='blue'){
                         selection.classList.remove('blue-mask');
+                        dp.classList.add('blue');
                     }
                     
                     if(selection.classList.contains('green-mask') && player.team !='green'){
                         selection.classList.remove('green-mask');
+                        dp.classList.add('green');
                     }
                     
                     if(selection.classList.contains('red-mask') && player.team !='red'){
                         selection.classList.remove('red-mask');
+                        dp.classList.add('red');
                     }
                 }
+                // Add to discard pile
+                dp.src = IMG_BASE + s.classList[1] + ".png";
+                dp.classList.add(s.classList[1],"special");
             }
             else {
                 // add card to discard pile
-                document.querySelector('.discard-pile').src = IMG_BASE + card + ".png";
+                dp.src = IMG_BASE + card + ".png";
+                dp.classList.add(player.team);
                 let handCard = document.querySelector(".hand-card." + card);
                 if(handCard !== null) {
                     let cardContainer = handCard.parentElement;
@@ -596,6 +615,32 @@ function play(event) {
         alert('Nothing selected');
     }
 }
+
+['mouseover', 'touchstart'].forEach(function(e) {
+    document.querySelector('.discard-container').addEventListener(e,function(event){
+        // format - .discard-pile .spades_2 .deck2 .blue .spades_J .special
+        let dp = document.querySelector('.discard-pile');
+        // there are more classes only when they are added
+        if(dp.classList.length > 1) {
+            let card = dp.classList[1];
+            let deck = dp.classList[2];
+            document.querySelector("." + card + "." + deck).classList.add('hover-effect');
+        }
+    });
+});
+
+['mouseout','touchend'].forEach(function(e) {
+    document.querySelector('.discard-container').addEventListener(e,function(event) {
+        let dp = document.querySelector('.discard-pile');
+        if(dp.classList.length > 1) {
+            let card = dp.classList[1];
+            let deck = dp.classList[2];
+            document.querySelector("." + card + "." + deck).classList.remove('hover-effect');
+        }
+    });
+});
+
+
 
 function compareResp(prev, cur) {
     if(previousState == null) {

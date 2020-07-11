@@ -3,7 +3,7 @@
 // var API_BASE_URL = "http://127.0.0.1:5000";
 var API_BASE_URL;
 const SHORT_POLLING_INTERVAL = 5000; // poll every 5 seconds
-const LONG_POLLING_INTERVAL = 20000; // poll every 5 seconds
+const LONG_POLLING_INTERVAL = 10000; // poll every 10 seconds
 const MAX_ATTEMPTS = 180; // Half an hour should be more than enough
 const TEAM_MAP = new Map([['1','green'], ['2','red'],['3','blue']]);
 const IMG_BASE = "assets/images/cards/";

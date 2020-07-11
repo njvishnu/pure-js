@@ -324,6 +324,7 @@ function handleReady(response) {
         }
 
         let dp = document.querySelector('.discard-pile');
+        dp.className="discard-pile";
         dp.classList.add(card, deck);
         if(special != '') {
             let j = translateCards(response["special"], "client");
@@ -373,6 +374,7 @@ function handleWait( response) {
                 pl.classList.add('player-highlight');
             }
             let dp = document.querySelector('.discard-pile');
+            dp.className="discard-pile";
             dp.classList.add(card, deck);
             if(special != '') {
                 let j = translateCards(response["special"], "client");
@@ -539,6 +541,7 @@ function play(event) {
             selection.classList.remove("selected"); // there will be only one selected
 
             let dp = document.querySelector('.discard-pile');
+            dp.className="discard-pile";
             dp.classList.add(selection.classList[2], selection.classList[3]);
             // remove card from player card list
             if(jFlag) {
